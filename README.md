@@ -20,7 +20,7 @@ Opgave 3: Lav en asynkron funktion med latitude og longitude som parametre til a
 
 ## Ekstraopgaver
 
-Opgave 4: Lav et endpoint for /menu som returnerer JSON data med produkter og lav en fetch() fra client for at tilføje alle produkterne til DOM på siden menu.html og tilføj HTML-siden til navigationen
+Opgave 4: Lav et endpoint for /products som returnerer JSON data med produkter og lav en fetch() fra client for at tilføje alle produkterne til DOM på siden menu.html og tilføj HTML-siden til navigationen
 
 [Link til dokumentation for res.json med Express](https://expressjs.com/en/api.html#res.json)
 
