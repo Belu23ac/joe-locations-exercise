@@ -21,14 +21,9 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// ----------------------------------------------------------------------------------------------------
-// OPGAVE 1: Lav et endpoint /locations for at sende locations.html
-
-
-
-
-
-// ----------------------------------------------------------------------------------------------------
+app.get("/locations", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "locations.html"));
+});
 
 app.get("/res", (req, res) => {
   res.send("Response message from server");
