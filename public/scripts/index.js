@@ -12,15 +12,15 @@ async function getResponse() {
   try {
     // fetch data fra /res endpoint og await responsen
     const response = await fetch('/res');
-    
+
     // hvis responsen ikke er ok, kast en fejl
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    
+
     // konverter responsen til tekst
-    const data = await response.text(); 
-    
+    const data = await response.text();
+
     // håndter succes
     console.log(data);
     responseDom.innerHTML = data;
@@ -35,27 +35,27 @@ async function getResponse() {
 // funktion til at sætte cookie
 // async funktion med await
 async function setCookie() {
-    // try catch blok
-    try {
-      // fetch data fra /res endpoint og await responsen
-      const response = await fetch('/cookie');
+  // try catch blok
+  try {
+    // fetch data fra /res endpoint og await responsen
+    const response = await fetch('/cookie');
 
-      // hvis responsen ikke er ok, kast en fejl
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      // konverter responsen til tekst
-      const value = await response.text();
-
-      // håndter succes
-      console.log(value);
-      cookieDom.innerHTML = value;
-    } catch (error) {
-      // håndter fejl
-      console.log(error);
-      cookieDom.innerHTML = `<p>Error: ${error.message}</p>`;
+    // hvis responsen ikke er ok, kast en fejl
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
+
+    // konverter responsen til tekst
+    const value = await response.text();
+
+    // håndter succes
+    console.log(value);
+    cookieDom.innerHTML = value;
+  } catch (error) {
+    // håndter fejl
+    console.log(error);
+    cookieDom.innerHTML = `<p>Error: ${error.message}</p>`;
+  }
 }
 
 
@@ -73,14 +73,14 @@ async function getLocation() {
 async function getLatLong(locationName) {
   try {
     const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(locationName)}&format=geojson`);
-    
+
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    
+
     const data = await response.json();
     console.log(data);
-    
+
     if (data.features && data.features.length > 0) {
       const [lon, lat] = data.features[0].geometry.coordinates;
       latlongDom.innerHTML = `Latitude: ${lat}, Longitude: ${lon}`;
@@ -93,22 +93,27 @@ async function getLatLong(locationName) {
     latlongDom.innerHTML = `<p>Error: ${error.message}</p>`;
   }
 }
-// ----------------------------------------------------------------------------------------------------
-
-
-// ----------------------------------------------------------------------------------------------------
-// Opgave 3: Lav en asynkron funktion med latitude og longitude som parametre til at hente vejrdata
-// url for API: `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&current_weather=true`
-// dokumentation for API: https://open-meteo.com/en/docs
-// response er json() data og skal konverteres og brug console.log() til at se data
-// denne funktion bliver kaldt i getLatLong() funktionen
 
 // async funktion med await
 async function getWeather(lat, long) {
+  try {
+    const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&current_weather=true`);
 
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
 
+    const data = await response.json();
+    console.log(data);
 
-
-
+    if (data.current_weather) {
+      const { temperature, windspeed, weathercode } = data.current_weather;
+      weatherDom.innerHTML = `Temperature: ${temperature}°C, Windspeed: ${windspeed} km/h, Weather Code: ${weathercode}`;
+    } else {
+      throw new Error('No weather data found');
+    }
+  } catch (error) {
+    console.log(error);
+    weatherDom.innerHTML = `<p>Error: ${error.message}</p>`;
+  }
 }
-// ----------------------------------------------------------------------------------------------------
