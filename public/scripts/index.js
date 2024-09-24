@@ -69,14 +69,6 @@ async function getLocation() {
   await getLatLong(selectedLocation);
 }
 
-
-// ----------------------------------------------------------------------------------------------------
-// Opgave 2: Lav en asynkron funktion med locationName som parameter til at hente latitude og longitude 
-// url for API: `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(locationName)}&format=json&addressdetails=1`
-// dokumentation for API: https://nominatim.org/release-docs/develop/api/Search/
-// response er json() data og skal konverteres og brug console.log() til at se data
-// denne funktion bliver kaldt i getLocation() funktionen
-
 // async funktion med await
 async function getLatLong(locationName) {
   try {
@@ -90,7 +82,7 @@ async function getLatLong(locationName) {
     console.log(data);
     
     if (data.features && data.features.length > 0) {
-      const { lat, lon } = data.features[0].geometry.coordinates;
+      const [lon, lat] = data.features[0].geometry.coordinates;
       latlongDom.innerHTML = `Latitude: ${lat}, Longitude: ${lon}`;
       await getWeather(lat, lon);
     } else {
