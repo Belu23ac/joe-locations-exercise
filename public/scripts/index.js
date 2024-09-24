@@ -79,11 +79,27 @@ async function getLocation() {
 
 // async funktion med await
 async function getLatLong(locationName) {
- 
-  
-
-
-
+  try {
+    const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(locationName)}&format=geojson`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log(data);
+    
+    if (data.features && data.features.length > 0) {
+      const { lat, lon } = data.features[0].geometry.coordinates;
+      latlongDom.innerHTML = `Latitude: ${lat}, Longitude: ${lon}`;
+      await getWeather(lat, lon);
+    } else {
+      throw new Error('No location data found');
+    }
+  } catch (error) {
+    console.log(error);
+    latlongDom.innerHTML = `<p>Error: ${error.message}</p>`;
+  }
 }
 // ----------------------------------------------------------------------------------------------------
 
